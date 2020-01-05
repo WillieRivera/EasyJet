@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<journeys>
+	<journey name="London">
+		<journeyleg>
+			<pos>0</pos>
+			<latlng>(43.07714469371172, -90.22775976562502)</latlng>
+		</journeyleg>
+		<journeyleg>
+			<pos>1</pos>
+			<latlng>(41.261529805435316, -90.53537695312502)</latlng>
+		</journeyleg>
+		<journeyleg>
+			<pos>2</pos>
+			<latlng>(40.76414139847818, -85.17404882812502)</latlng>
+		</journeyleg>
+		<journeyleg>
+			<pos>3</pos>
+			<latlng>(42.5614063625349, -84.21823828125002)</latlng>
+		</journeyleg>
+	</journey>
+</journeys>

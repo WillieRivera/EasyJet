@@ -1,0 +1,61 @@
+<?xml version="1.0" ?>
+<journeys>
+	<journey name="Paris">
+		<journeyleg>
+			<pos>0</pos>
+			<latlng>(43.00487896833041, -90.20578710937502)</latlng>
+		</journeyleg>
+		<journeyleg>
+			<pos>1</pos>
+			<latlng>(41.869796905495676, -90.73313085937502)</latlng>
+		</journeyleg>
+		<journeyleg>
+			<pos>2</pos>
+			<latlng>(40.789099971832655, -85.94309179687502)</latlng>
+		</journeyleg>
+		<journeyleg>
+			<pos>3</pos>
+			<latlng>(43.51691843392284, -84.76755468750002)</latlng>
+		</journeyleg>
+		<journeyleg>
+			<pos>4</pos>
+			<latlng>(43.53285026499538, -89.08518164062502)</latlng>
+		</journeyleg>
+		<journeyleg>
+			<pos>5</pos>
+			<latlng>(41.869796905495676, -89.07419531250002)</latlng>
+		</journeyleg>
+		<journeyleg>
+			<pos>6</pos>
+			<latlng>(40.363529899917765, -89.48068945312502)</latlng>
+		</journeyleg>
+		<journeyleg>
+			<pos>7</pos>
+			<latlng>(43.66810093221267, -90.81003515625002)</latlng>
+		</journeyleg>
+		<journeyleg>
+			<pos>8</pos>
+			<latlng>(40.96354734872849, -84.09738867187502)</latlng>
+		</journeyleg>
+		<journeyleg>
+			<pos>9</pos>
+			<latlng>(43.16535386558659, -91.18357031250002)</latlng>
+		</journeyleg>
+		<journeyleg>
+			<pos>10</pos>
+			<latlng>(40.614193099617296, -90.83200781250002)</latlng>
+		</journeyleg>
+		<journeyleg>
+			<pos>11</pos>
+			<latlng>(40.28814844142691, -87.43723242187502)</latlng>
+		</journeyleg>
+		<journeyleg>
+			<pos>12</pos>
+			<latlng>(43.02094537417169, -84.86643164062502)</latlng>
+		</journeyleg>
+		<journeyleg>
+			<pos>13</pos>
+			<latlng>(41.61567933932579, -84.40500585937502)</latlng>
+		</journeyleg>
+	</journey>
+</journeys>

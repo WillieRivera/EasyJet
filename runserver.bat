@@ -1,0 +1,2 @@
+"%CD%" index.py
+pause

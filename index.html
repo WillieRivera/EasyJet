@@ -1,0 +1,264 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Plan Journey Map</title>
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+  <meta charset="utf-8">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #000;
+    }
+
+    form {
+      display: inline-block;
+    }
+    .header {
+      background-color: rgb(131,190,29);
+      text-align: center;
+      padding: 8px;
+      color: white;
+    }
+    .footer {
+      background-color: #eee;
+      text-align: center;
+      padding: 2px;
+      color: rgb(131,190,29);
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+    .content {
+      width: 70%;
+      margin: auto;
+      text-align: center;
+      padding: 20px;
+    }
+
+    #google-map {
+      width: 860px;
+      height: 610px;
+      border: 3px solid rgb(131,190,29);
+      margin: auto;
+      margin-top: 50px;
+      padding-top: 1px;
+
+    }
+    button {
+      margin-left: 20px;
+      border-radius: 5px;
+      border-style: none;
+      box-shadow: 2px 3px #aaa;
+    }
+    button:active {
+      box-shadow: 2px 1px #999;
+    }
+
+    #SaveJourney {
+      background-color: rgb(131,190,29);
+      color: white;
+      padding: 8px;
+    }
+    #GetJourney {
+      background-color: rgb(238,120,43);
+      color: white;
+      padding: 8px;
+    }
+    #ClearMap {
+      background-color: rgb(9,166,255);
+      color: white;
+      padding: 8px;
+    }
+    #guide-road:hover {
+      background-color: rgb(88,131,19);
+    }
+    #clear-map:hover {
+      background-color: rgb(190,90,29);
+    }
+    #new-map:hover {
+      background-color: rgb(9,111,210);
+    }
+
+
+    input {
+      border: 1px solid rgb(131,190,29);
+      padding: 8px; 
+    }
+    label {
+      font-size: 25px;
+      color: #eee;
+    }
+    #map{
+      width:800px;
+      height:600px;
+      margin:0 auto;
+      margin-top:80px;
+    }
+  </style>
+</head>
+<body>
+
+	<div class="header">
+		<h1>easyJet Journey Service</h1>
+	</div>
+
+	<div class="content">
+		<form action="" method="POST">
+			<label>Journey Name: </label>
+			<input type="text" name="passdata" id="journeyName">
+		</form>
+
+		<button type="submit" id="SaveJourney">SaveJourney</button>
+		<button id="GetJourney">GetJourney</button>
+		<button id="ClearMap" >ClearMap</button>
+		<div id="map">
+			
+		</div>
+	</div>
+
+	<div class="footer">
+		<h3>Enjoy your travel!</h3>
+	</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script>
+
+      // This example creates an interactive map which constructs a polyline based on
+      // user clicks. Note that the polyline only appears once its path property
+      // contains two LatLng coordinates.
+	  var poscount=0;
+      var poly;
+      var map;
+      var markers=[];
+
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 7,
+          center: {lat: 41.879, lng: -87.624}  // Center the map on Chicago, USA.
+        });
+
+        poly = new google.maps.Polyline({
+          strokeColor: '#000000',
+          strokeOpacity: 1.0,
+          strokeWeight: 3
+        });
+        poly.setMap(map);
+
+        // Add a listener for the click event
+        map.addListener('click', addLatLng);
+      }
+
+      // Handles click events on a map, and adds a new point to the Polyline.
+      function addLatLng(event) {
+       // Add a new marker at the new plotted point on the polyline.
+       addMarker(event.latLng);
+      }
+
+      function addMarker(location){
+      	var path = poly.getPath();
+      	path.push(location);
+		var marker = new google.maps.Marker({
+          position: location,
+          map: map
+        });
+        markers.push(marker);
+	  }
+
+	  function setMapOnAll(map) {
+        for (var i = 0; i < markers.length; i++) {
+          markers[i].setMap(map);
+        }
+      }
+
+      function clearMarkers() {
+        setMapOnAll(null);
+      }
+
+      function deleteMarkers() {
+        clearMarkers();
+        markers = [];
+      }
+
+
+      function saveJourney() {
+		  //posarray=[{"lati":"2323","long":"4332"}];
+		  //posarray[1]={"lati":"1111","long":"1568"};
+		  var journeyName=$("#journeyName").val();
+		  var posarray=[];
+		  for(var i=0;i<markers.length;i++)
+		  	posarray[i]={"lat":markers[i].position.lat(),"lng":markers[i].position.lng()}
+		  var json={"journeyName":journeyName,"posarray":posarray};
+          //var json={"one" : "1", "two" : "2", "three" : "3"};
+		  $.ajax({
+			  type: "POST",
+			  url: "/saveJourney",
+			  data: JSON.stringify(json),
+			  dataType: "application/json",
+			  success: function (data) {
+				  /*$('#editpriceoflessondiv').html("<div id='message_1'></div>");
+				  $('#message_1').html(data)
+						  .hide()
+						  .fadeIn(1500, function () {
+
+						  });*/
+			  }
+		  });
+	  }
+
+	  function GetJourney() {
+      		var journeyName=$("#journeyName").val();
+      		$.ajax({
+			  type: "GET",
+			  url: "/getJourney?journey="+journeyName,
+			  success: function (data) {
+			  	deleteMarkers();
+			  	initMap();
+			  	journeyName = data.journeyName;
+			  	if(journeyName==undefined)
+				{
+					alert("Journey Doesn't Exist")
+					return;
+				}
+			  	else
+				{
+					for(var i=0;i<data.posarray.length;i++)
+						addMarker(new google.maps.LatLng(data.posarray[i]['lat'],data.posarray[i]['lng']));
+				}
+			  }
+		  });
+	  }
+
+	  function ClearMap(){
+
+	  }
+
+	  $(document).ready(function(){
+
+	  	$("#SaveJourney").click(function(){
+	  		saveJourney();
+
+		});
+
+
+	  	$("#GetJourney").click(function(){
+	  		GetJourney();
+		});
+		
+	  	$("#ClearMap").click(function () {
+			deleteMarkers();
+			initMap();
+		})
+	  });
+    </script>
+
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDWdGA-ndsHMtR5-cdZrc5SHtfKKBG5Bfg&callback=initMap">
+    </script>
+</body>
+</html>
+
